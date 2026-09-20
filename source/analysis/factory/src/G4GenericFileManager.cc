@@ -391,6 +391,17 @@ G4bool G4GenericFileManager::SetNtupleDirectoryName(const G4String& dirName)
 }
 
 //_____________________________________________________________________________
+G4bool G4GenericFileManager::WriteTString(const G4String& name, const G4String& value)
+{
+  if ( ! fDefaultFileManager ) {
+    Warn("Cannot write \"" + name + "\": no file is open.", fkClass, "WriteTString");
+    return false;
+  }
+
+  return fDefaultFileManager->WriteTString(name, value);
+}
+
+//_____________________________________________________________________________
 void G4GenericFileManager::SetCompressionLevel(G4int level)
 {
   G4BaseFileManager::SetCompressionLevel(level);

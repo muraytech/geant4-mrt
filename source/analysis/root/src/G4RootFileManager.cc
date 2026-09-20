@@ -234,6 +234,26 @@ std::shared_ptr<G4RootFile> G4RootFileManager::GetNtupleFile(
 }
 
 //_____________________________________________________________________________
+G4bool G4RootFileManager::WriteTString(const G4String& name, const G4String& value)
+{
+  if ( ! fFile ) {
+    Warn("Cannot write \"" + name + "\": file is not open.", fkClass, "WriteTString");
+    return false;
+  }
+
+  auto* file = std::get<0>(*fFile).get();
+  if (file == nullptr) return false;
+
+  if ( ! tools::wroot::to(file->dir(), name, value) ) return false;
+
+  // Prevent the file from being removed by DeleteEmptyFiles()
+  // when it contains no histograms/ntuples besides this string object
+  SetIsEmpty(GetFullFileName(), false);
+
+  return true;
+}
+
+//_____________________________________________________________________________
 G4bool G4RootFileManager::CloseNtupleFile(
   RootNtupleDescription* ntupleDescription,  G4int mainNumber)
 {

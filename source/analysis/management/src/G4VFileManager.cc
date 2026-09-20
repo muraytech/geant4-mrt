@@ -82,3 +82,11 @@ G4bool G4VFileManager::SetNtupleDirectoryName(const G4String& dirName)
   fNtupleDirectoryName = dirName;
   return true;
 }
+
+//_____________________________________________________________________________
+G4bool G4VFileManager::WriteTString(const G4String& name, [[maybe_unused]] const G4String& value)
+{
+  Warn("Cannot write \"" + name + "\": writing string objects is not supported "
+       "for file type " + GetFileType() + ".", fkClass, "WriteTString");
+  return false;
+}
