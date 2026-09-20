@@ -97,6 +97,10 @@ class G4VAnalysisManager
     G4String GetNtupleDirectoryName() const;
     G4int    GetCompressionLevel() const;
 
+    // Write a named string object to the top-level directory of the output file
+    // (currently supported only for the Root file format)
+    G4bool WriteTString(const G4String& name, const G4String& value);
+
     // Methods for handling histograms
     //
     G4int CreateH1(const G4String& name, const G4String& title,

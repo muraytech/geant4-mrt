@@ -442,6 +442,12 @@ G4bool G4VAnalysisManager::SetFileName(const G4String& fileName)
 }
 
 //_____________________________________________________________________________
+G4bool G4VAnalysisManager::WriteTString(const G4String& name, const G4String& value)
+{
+  return fVFileManager->WriteTString(name, value);
+}
+
+//_____________________________________________________________________________
 G4bool G4VAnalysisManager::SetHistoDirectoryName(const G4String& dirName)
 {
   return fVFileManager->SetHistoDirectoryName(dirName);

@@ -32,6 +32,17 @@ inline bool to(directory& a_dir,const std::map<std::string,std::string>& a_annot
   return true;
 }
 
+inline bool to(directory& a_dir,const std::string& a_name,const std::string& a_value) {
+  bufobj* bo = new bufobj(a_dir.file().out(),a_dir.file().byte_swap(),256,a_name,a_value,"TNamed");
+  if(!Named_stream(*bo,a_name,a_value)) {
+    a_dir.file().out() << "tools::wroot::to : Named_stream failed." << std::endl;
+    delete bo;
+    return false;
+  }
+  a_dir.append_object(bo); //a_dir takes ownership of bo.
+  return true;
+}
+
 inline bool to(directory& a_dir,const histo::h1d& a_histo,const std::string& a_name) {
   bufobj* bo = new bufobj(a_dir.file().out(),a_dir.file().byte_swap(),256,a_name,a_histo.title(),"TH1D");
   if(!TH1D_stream(*bo,a_histo,a_name)) {

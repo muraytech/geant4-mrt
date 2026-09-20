@@ -67,6 +67,9 @@ class G4RootFileManager : public G4VTFileManager<G4RootFile>
     G4String GetFileType() const final { return "root"; }
     G4bool HasCycles() const final { return true; }
 
+    // Write a named string object (as a TNamed) to the top-level file directory
+    G4bool WriteTString(const G4String& name, const G4String& value) final;
+
     // Specific methods for files per objects
     std::shared_ptr<G4RootFile> CreateNtupleFile(RootNtupleDescription* ntupleDescription,
                                   G4int mainNumber = -1);

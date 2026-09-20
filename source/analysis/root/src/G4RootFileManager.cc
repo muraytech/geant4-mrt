@@ -234,6 +234,31 @@ std::shared_ptr<G4RootFile> G4RootFileManager::GetNtupleFile(
 }
 
 //_____________________________________________________________________________
+G4bool G4RootFileManager::WriteTString(const G4String& name, const G4String& value)
+{
+  // Resolve the file via the file map (like histogram/ntuple writing does),
+  // rather than via fFile directly: booking an ntuple can register a new
+  // file object under the same name (e.g. for the "main" ntuple-merging
+  // file), leaving fFile pointing at a stale, orphaned file object.
+  auto rfile = GetTFile(GetFullFileName());
+  if ( ! rfile ) {
+    Warn("Cannot write \"" + name + "\": file is not open.", fkClass, "WriteTString");
+    return false;
+  }
+
+  auto* file = std::get<0>(*rfile).get();
+  if (file == nullptr) return false;
+
+  if ( ! tools::wroot::to(file->dir(), name, value) ) return false;
+
+  // Prevent the file from being removed by DeleteEmptyFiles()
+  // when it contains no histograms/ntuples besides this string object
+  SetIsEmpty(GetFullFileName(), false);
+
+  return true;
+}
+
+//_____________________________________________________________________________
 G4bool G4RootFileManager::CloseNtupleFile(
   RootNtupleDescription* ntupleDescription,  G4int mainNumber)
 {

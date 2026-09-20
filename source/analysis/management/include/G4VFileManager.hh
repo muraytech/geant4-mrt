@@ -78,6 +78,10 @@ class G4VFileManager : public G4BaseFileManager
     virtual G4bool SetHistoDirectoryName(const G4String& dirName);
     virtual G4bool SetNtupleDirectoryName(const G4String& dirName);
 
+    // Write a named string object to the top-level file directory
+    // (supported only by formats capable of storing arbitrary named objects)
+    virtual G4bool WriteTString(const G4String& name, const G4String& value);
+
     void LockDirectoryNames();
     void UnlockDirectoryNames();
 

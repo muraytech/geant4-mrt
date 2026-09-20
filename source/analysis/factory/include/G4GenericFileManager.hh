@@ -77,6 +77,9 @@ class G4GenericFileManager : public G4VFileManager
     G4bool SetNtupleDirectoryName(const G4String& dirName) override;
     void SetCompressionLevel(G4int level) override;
 
+    // Write a named string object to the default (currently open) file
+    G4bool WriteTString(const G4String& name, const G4String& value) final;
+
     G4String GetFileType() const final { return ""; }
 
     // Set default output type (backward compatibility)
