@@ -33,7 +33,14 @@ inline bool to(directory& a_dir,const std::map<std::string,std::string>& a_annot
 }
 
 inline bool to(directory& a_dir,const std::string& a_name,const std::string& a_value) {
-  bufobj* bo = new bufobj(a_dir.file().out(),a_dir.file().byte_swap(),256,a_name,a_value,"TNamed");
+  // NOTE: the bufobj's own "title" argument becomes the ROOT key header's
+  // title field, which (per the TKey format) is bounded by a 16 bit length
+  // (tools::wroot::key::m_key_length) - unlike the object's own streamed
+  // payload, which has no such limit. Passing a_value there as well (instead
+  // of a short placeholder, as the "annotations" to() above does) silently
+  // truncates/overflows for large values. The real content is written only
+  // via Named_stream() below, into the object's own payload.
+  bufobj* bo = new bufobj(a_dir.file().out(),a_dir.file().byte_swap(),256,a_name,"string","TNamed");
   if(!Named_stream(*bo,a_name,a_value)) {
     a_dir.file().out() << "tools::wroot::to : Named_stream failed." << std::endl;
     delete bo;
